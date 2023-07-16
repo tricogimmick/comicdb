@@ -1,9 +1,11 @@
 // @ts-nocheck
 import { json } from '@sveltejs/kit';
 import { Database } from "sqlite3";
+import { env } from '$env/dynamic/private';
 
 function AppendIssue(request) {
-    const db = new Database("C:\\Users\\osamu\\Data\\comicdb.sqlite3");
+    const dbPath = env["COMICDB_PATH"];
+    const db = new Database(dbPath);
     db.run("INSERT INTO issues VALUES (?,?,?,?,?)", 
         request.issueId, request.magazineId, request.title, request.coverUrl, request.tocUrl);
     for (const x of request.episodes) {

@@ -1,10 +1,12 @@
 // @ts-nocheck
 import { json } from '@sveltejs/kit';
 import { Database } from "sqlite3";
+import { env } from '$env/dynamic/private';
 import { page } from '$app/stores';
 
 function GetIssues(magazineId, year) {
-    const db = new Database("C:\\Users\\osamu\\Data\\comicdb.sqlite3");
+    const dbPath = env["COMICDB_PATH"];
+    const db = new Database(dbPath);
     const p = new Promise((ok, ng) => {
         const issueId = `${magazineId}${year}%`;
         db.all(

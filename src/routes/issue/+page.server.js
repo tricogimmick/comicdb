@@ -1,7 +1,10 @@
+// @ts-nocheck
 import { Database } from "sqlite3";
+import { env } from '$env/dynamic/private';
 
 function getMagazines() {
-    const db = new Database("C:\\Users\\osamu\\Data\\comicdb.sqlite3");
+    const dbPath = env["COMICDB_PATH"];
+    const db = new Database(dbPath);
     const p = new Promise((ok, ng) => {
         db.all("SELECT * FROM magazines", (err, rows) => {
             if (err) {

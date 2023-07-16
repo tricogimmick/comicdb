@@ -7,7 +7,7 @@
             titleId: null,
             title: "",
             pageNo: null,
-            serialization: "0",
+            serialization: "1",
             isColor: false,
             notice: "",
             error: false
@@ -31,7 +31,9 @@
         console.log(episode);
     }
 
-    function handleClickAddButton() {
+    function handleClickAddButton(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();    
         const no = episodes.length + 1;
         episodes = [...episodes, newEpisode(no)];
     }
@@ -40,9 +42,9 @@
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        const hasError = episodes.find(x => x.error != null);
+        const hasError = episodes.find(x => x.error != false);
         if (hasError) {
-            alert("エラー!")
+            alert(JSON.stringify(hasError))
             return
         }
 
@@ -80,11 +82,11 @@
     $: issueId = `${magazine}${year}${issue}`;
 
     let episodes = [
-        { no: 1, titleId: null, title: "", pageNo: null, serialization: "0", isColor: false, notice: "", error: false },
-        { no: 2, titleId: null, title: "", pageNo: null, serialization: "0", isColor: false, notice: "", error: false },
-        { no: 3, titleId: null, title: "", pageNo: null, serialization: "0", isColor: false, notice: "", error: false },
-        { no: 4, titleId: null, title: "", pageNo: null, serialization: "0", isColor: false, notice: "", error: false },
-        { no: 5, titleId: null, title: "", pageNo: null, serialization: "0", isColor: false, notice: "", error: false }
+        { no: 1, titleId: null, title: "", pageNo: null, serialization: "1", isColor: false, notice: "", error: false },
+        { no: 2, titleId: null, title: "", pageNo: null, serialization: "1", isColor: false, notice: "", error: false },
+        { no: 3, titleId: null, title: "", pageNo: null, serialization: "1", isColor: false, notice: "", error: false },
+        { no: 4, titleId: null, title: "", pageNo: null, serialization: "1", isColor: false, notice: "", error: false },
+        { no: 5, titleId: null, title: "", pageNo: null, serialization: "1", isColor: false, notice: "", error: false }
      ];
 </script>
 
@@ -208,7 +210,7 @@
         font-weight: normal;
     }
     form > div > table .col-title > input {
-        width: 20em;
+        width: 25em;
     }
     form > div > table .col-page > input {
         width: 5em;
