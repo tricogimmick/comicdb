@@ -2,10 +2,8 @@
 import { Database } from "sqlite3";
 import { env } from '$env/dynamic/private';
 
-function getMagazines() {
-    const dbPath = env["COMICDB_PATH"];
-    const db = new Database(dbPath);
-    const p = new Promise((ok, ng) => {
+function getMagazines(db) {
+    return new Promise((ok, ng) => {
         db.all("SELECT * FROM magazines", (err, rows) => {
             if (err) {
                 ng(err);
@@ -14,13 +12,10 @@ function getMagazines() {
             }
         });
     });
-    return p;   
 }
 
-function getTitles() {
-    const dbPath = env["COMICDB_PATH"];
-    const db = new Database(dbPath);
-    const p = new Promise((ok, ng) => {
+function getTitles(db) {
+    return new Promise((ok, ng) => {
         db.all("SELECT * FROM titles", (err, rows) => {
             if (err) {
                 ng(err);
@@ -29,12 +24,16 @@ function getTitles() {
             }
         });
     });
-    return p;  
 }
 
 export async function load() {
+    const dbPath = env["COMICDB_PATH"];
+    const db = new Database(dbPath);
+    const magazines = await getMagazines(db);
+    const titles = await getTitles(db);
+    db.close();
     return {
-        magazines: await getMagazines(),
-        titles: await getTitles()
+        magazines,
+        titles
     };
 }

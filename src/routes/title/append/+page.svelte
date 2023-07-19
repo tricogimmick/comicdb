@@ -7,10 +7,10 @@
         authors = [...authors, ""];
     } 
 
-    function hadleClickAddPlaywright(e) {
+    function hadleClickAddScripter(e) {
         e.preventDefault();
         e.stopImmediatePropagation();    
-        playwrights = [...playwrights, ""];
+        scripters = [...scripters, ""];
     } 
 
     async function handleClickSubmit(e) {
@@ -19,13 +19,13 @@
 
         const request = {
             title,
+            contentType,
             publication,
             isCompletion,
             description,
             authors,
-            playwrights
+            scripters
         }
-        console.log(request);
         try {
             const ret = await fetch("/api/title/append", {
                 method: "POST",
@@ -45,7 +45,8 @@
 
     let title = "";
     let authors = [""];
-    let playwrights = [""];
+    let scripters = [""];
+    let contentType = "0";
     let publication = "";
     let isCompletion = false;
     let description = "";
@@ -65,20 +66,27 @@
                     <option value={author.name}></option>
                     {/each}
                 </datalist>
+                <label for="authors0">漫画家 :</label>
                 <div>
-                    <label for="authors0">漫画家 :</label><br>
                     {#each authors as author, i}
                     <input type="text" id="authors{i}" list="author-list" bind:value={author} ><br>
                     {/each} 
                     <button on:click={hadleClickAddAuthor}>追加</button>
                 </div>
+                <label for="scripter0">原作者 :</label><br>
                 <div>
-                    <label for="playwright0">原作者 :</label><br>
-                    {#each playwrights as playwright, j}
-                    <input type="text" id="authors{j}" list="author-list" bind:value={playwright} ><br>
+                    {#each scripters as scripter, j}
+                    <input type="text" id="scripter{j}" list="author-list" bind:value={scripter} ><br>
                     {/each} 
-                    <button on:click={hadleClickAddPlaywright}>追加</button>
+                    <button on:click={hadleClickAddScripter}>追加</button>
                 </div>    
+            </div>
+            <div>
+                <label for="contentType">種別 :</label>
+                <select id="contentType" bind:value={contentType}>
+                    <option value="0">読み切り</option>
+                    <option value="1">連載</option>
+                </select>
             </div>
             <div>
                 <label for="publication">掲載誌 :</label>
@@ -111,25 +119,29 @@
     form > div {
         margin-bottom: 1em;
     }
-    form > div > label {
-        width: 20em;
+    form label {
+        display: inline-block;
+        width: 4em;
         margin-right: 0.5em;
     }
-    form > div input {
+    form input {
         padding: 0.5em 0.5em;        
     }
-    form > div  select {
+    form select {
         padding: 0.5em 0.5em;        
     }    
-    form > div button {
+    form button {
         margin-top: 0.5em;
     }
     .authors-container {
         display: flex;
-        margin-left: -2em;
+    }
+    .authors-container > label {
+        display: block;
     }
     .authors-container > div {
-        margin-left: 2em;
+        margin-left: 0.3em;
+        margin-right: 2em;
     }
     form > div.buttons {
         text-align: right;

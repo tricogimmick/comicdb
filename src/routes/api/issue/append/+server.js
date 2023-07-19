@@ -6,12 +6,13 @@ import { env } from '$env/dynamic/private';
 function AppendIssue(request) {
     const dbPath = env["COMICDB_PATH"];
     const db = new Database(dbPath);
-    db.run("INSERT INTO issues VALUES (?,?,?,?,?)", 
-        request.issueId, request.magazineId, request.title, request.coverUrl, request.tocUrl);
-    for (const x of request.episodes) {
-        db.run("INSERT INTO episodes VALUES (?,?,?,?,?,?,?)", 
+    db.run("INSERT INTO issues VALUES (?,?,?,?,?,?)", 
+        request.issueId, request.magazineId, request.title, request.coverUrl, request.tocUrl, request.description);
+    for (const x of request.contents) {
+        const serializationStatus = x.serializationStatus == "" ? null : Number(x.serializationStatus);
+        db.run("INSERT INTO contents VALUES (?,?,?,?,?,?,?,?)", 
             request.issueId, x.no, x.titleId, x.pageNo, 
-            Number(x.serialization) , x.isColor ? 1 : 0, x.notice);
+            Number(x.contentType) , x.isColor ? 1 : 0, serializationStatus, x.description);
     }
     db.close();
 }

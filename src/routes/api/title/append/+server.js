@@ -2,13 +2,12 @@
 import { json } from '@sveltejs/kit';
 import { Database } from "sqlite3";
 import { env } from '$env/dynamic/private';
-import { isReturnStatement } from 'typescript';
 
 async function AppendTitle(db, request) {
     return new Promise((ok, ng) => {
         db.serialize(() => {
-            db.run("INSERT INTO titles (title, publication, completion, description) VALUES (?,?,?,?)", 
-                request.title, request.publication, request.isCompletion ? 1 : 0, request.description);
+            db.run("INSERT INTO titles (title, content_type, publication, completion, description) VALUES (?,?,?,?,?)", 
+                request.title, Number(request.contentType), request.publication, request.isCompletion ? 1 : 0, request.description);
             db.get("SELECT id FROM titles WHERE title = ?", [request.title], (err, rec) => {
                 if (err) {
                     ng(err);
@@ -74,9 +73,9 @@ export async function POST({ request }) {
                 await AppendTitleAuthor(db, titleId, author, "AUTHOR");
             }
         }
-        for (let playwright of requesJson.playwrights) {
-            if (playwright != null && playwright != "") {
-                await AppendTitleAuthor(db, titleId, playwright, "SCREENPLAY");
+        for (let scripter of requesJson.scripters) {
+            if (scripter != null && scripter != "") {
+                await AppendTitleAuthor(db, titleId, scripter, "SCRIPT");
             }
         }
         db.close();

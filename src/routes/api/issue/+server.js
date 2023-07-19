@@ -12,7 +12,7 @@ function GetIssues(magazineId, year) {
         db.all(
             "SELECT i.id, i.title, count(*) as count_of_title " +
             "FROM issues as i " +
-            "LEFT JOIN episodes as e ON e.issue_id = i.id " +
+            "LEFT JOIN contents as e ON e.issue_id = i.id " +
             "WHERE i.magazine_id = ? AND i.id like ? " +
             "GROUP BY i.id, i.title",
             [magazineId, issueId],
