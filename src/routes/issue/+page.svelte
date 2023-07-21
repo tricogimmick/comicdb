@@ -56,7 +56,7 @@
                 {#each issues as issue, i (issue.id)}
                 <tr>
                     <td>{i + 1}</td>
-                    <td>{issue.title}</td>
+                    <td><a href="/issue/{issue.id}">{issue.title}</a></td>
                     <td>{issue.count_of_title}</td>
                 </tr>
                 {/each}                        
