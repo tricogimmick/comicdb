@@ -10,7 +10,7 @@ function GetIssues(magazineId, year) {
     const p = new Promise((ok, ng) => {
         const issueId = `${magazineId}${year}%`;
         db.all(
-            "SELECT i.id, i.title, count(*) as count_of_title " +
+            "SELECT i.id, i.title, count(*) as count_of_title, i.description " +
             "FROM issues as i " +
             "LEFT JOIN contents as e ON e.issue_id = i.id " +
             "WHERE i.magazine_id = ? AND i.id like ? " +

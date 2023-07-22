@@ -55,6 +55,7 @@
                     <th>No</th>
                     <th>号数</th>
                     <th>掲載数</th>
+                    <th>摘要</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +64,7 @@
                     <td>{i + 1}</td>
                     <td><a href="/issue/{issue.id}">{issue.title}</a></td>
                     <td>{issue.count_of_title}</td>
+                    <td>{issue.description ?? ""}</td>
                 </tr>
                 {/each}                        
             </tbody>
