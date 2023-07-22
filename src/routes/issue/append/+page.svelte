@@ -1,7 +1,7 @@
 <script>
     // @ts-nocheck
-
-    import { tick } from 'svelte';
+    import { page } from '$app/stores';
+    import { onMount } from 'svelte';
 
     function newContent(no) {
         return {
@@ -110,6 +110,12 @@
             return
         }
     }
+
+    onMount(async () => {
+        const params = $page.url.searchParams;
+        magazine = params.get("magazine-id") ?? "WSMG";
+        year = params.get("year") ?? "2023";
+    })    
 
     export let data;
 
@@ -233,6 +239,9 @@
             <input type="submit" name="submit" value="登録">
         </div>
     </form>
+    <div>
+        <a href="/issue?magazine-id={magazine}&year={year}">戻る</a>
+    </div>
 </div>
 
 <style>

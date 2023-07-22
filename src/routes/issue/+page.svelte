@@ -1,19 +1,21 @@
 <script>
     // @ts-nocheck
+    import { page } from '$app/stores';
     import { onMount } from 'svelte';
 
     async function handleChangeConditions() {
         try {
             const ret = await fetch(`/api/issue?magazineId=${magazine}&year=${year}`)
-            const data = await ret.json();
-            console.log(data);
-            issues = data;
+            issues = await ret.json();;
         } catch (e) {
             alert(e.message);
         }
     }
 
     onMount(async () => {
+        const params = $page.url.searchParams;
+        magazine = params.get("magazine-id") ?? "WSMG";
+        year = params.get("year") ?? "2023";
         await handleChangeConditions();
     })
 
@@ -40,8 +42,11 @@
                     <option value="2023" selected>2023年</option>
                     <option value="2024">2024年</option>
                 </select>    
+                <span><a href="/issue/append?magazine-id={magazine}&year={year}">追加</a></span>
             </div>            
         </form>
+    </div>
+    <div>
     </div>
     <div>
         <table>
@@ -75,6 +80,9 @@
     }
     form > div > label {
         display: inline-block;
+        margin-left: 1em;
+    }
+    form > div > span {
         margin-left: 1em;
     }
     form > div > select {

@@ -78,7 +78,9 @@
         e.preventDefault();
         e.stopImmediatePropagation();
 
-        if (!confirm("更新しますか？")) {
+        const submitMode = e.submitter.name == "delete" ? "delete" : "update";
+        const confirmMessage = submitMode == "delete" ? "削除しますか？" : "更新しますか？";
+        if (!confirm(confirmMessage)) {
             return;
         }
 
@@ -89,7 +91,7 @@
         }
 
         try {
-            const ret = await fetch("/api/issue/update", {
+            const ret = await fetch(`/api/issue/${submitMode}`, {
                 method: "POST",
                 body: JSON.stringify({
                     issueId: data.issueId,
@@ -102,8 +104,8 @@
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            })
-            goto("/issue")
+            });
+            goto(`/issue?magazine-id=${magazineId}&year=${year}`);
         } catch (e) {
             alert(e.message);
             return
@@ -238,9 +240,13 @@
             </table>
         </div>
         <div class="buttons">
-            <input type="submit" name="submit" value="更新">
+            <input type="submit" name="delete" value="削除" style="background-color: red;">
+            <input type="submit" name="update" value="更新">
         </div>
     </form>
+    <div>
+        <a href="/issue?magazine-id={magazineId}&year={year}">戻る</a>
+    </div>
 </div>
 
 <style>
