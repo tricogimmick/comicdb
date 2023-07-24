@@ -2,6 +2,8 @@
     // @ts-nocheck
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+
 
     function newContent(no) {
         return {
@@ -104,10 +106,10 @@
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            })
+            });
+            goto(`/issue?magazine-id=${magazine}&year=${year}`);
         } catch (e) {
             alert(e.message);
-            return
         }
     }
 

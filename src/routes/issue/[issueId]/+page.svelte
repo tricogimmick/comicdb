@@ -108,7 +108,6 @@
             goto(`/issue?magazine-id=${magazineId}&year=${year}`);
         } catch (e) {
             alert(e.message);
-            return
         }
     }
 
