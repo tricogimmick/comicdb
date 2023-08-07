@@ -1,5 +1,6 @@
 <script>
     // @ts-nocheck
+    import { goto } from '$app/navigation';
 
     function hadleClickAddAuthor(e) {
         e.preventDefault();
@@ -16,6 +17,10 @@
     async function handleClickSubmit(e) {
         e.preventDefault();
         e.stopImmediatePropagation();
+
+        if (!confirm("登録しますか？")) {
+            return;
+        }
 
         const request = {
             title,
@@ -34,7 +39,7 @@
                     'Content-Type': 'application/json'
                 }
             })
-            const data = await ret.json();
+            goto(`/title/`);
         } catch (e) {
             alert(e.message);
             return

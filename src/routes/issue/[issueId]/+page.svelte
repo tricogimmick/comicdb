@@ -132,6 +132,9 @@
             });
             no++;
         }
+        if (rows.length === 0) {
+            rows.push({ no: 1, titleId: null, title: "", pageNo: null, contentType: "1", isColor: false, serializationStatus: "", description: "", error: false });
+        }
         contents = rows;
     })
 
@@ -252,6 +255,9 @@
     .page-container {
         margin: 1em 2em;
         width: 1100px;
+    }
+    .page-container > div:last-child {
+        margin-bottom: 4em;
     }
     form > div {
         margin-bottom: 5px;
