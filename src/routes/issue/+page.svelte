@@ -15,13 +15,13 @@
     onMount(async () => {
         const params = $page.url.searchParams;
         magazine = params.get("magazine-id") ?? "WSMG";
-        year = params.get("year") ?? "2023";
+        year = params.get("year") ?? "2024";
         await handleChangeConditions();
     })
 
     export let data;
     let magazine = "WSMG";
-    let year = "2023";
+    let year = "2024";
     let issues = [];
 </script>
 

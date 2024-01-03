@@ -3,6 +3,12 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
+    function hadleClickAddCover(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();    
+        covers = [...covers, ""];
+    }     
+
     function newContent(no) {
         return {
             no,
@@ -99,6 +105,7 @@
                     coverUrl,
                     tocUrl,
                     description,
+                    covers,
                     contents
                 }),
                 headers: {
@@ -112,10 +119,15 @@
     }
 
     onMount(async () => {
+        console.log(data.issue.covers);
         issueTitle = data.issue.title;
         coverUrl = data.issue.cover_url;
         tocUrl = data.issue.toc_url;
         description = data.issue.description;
+        covers = data.issue.covers.map(x => x.title);
+        if (covers.length == 0) {
+            covers.push("");
+        }
         const rows = [];
         let no = 1;
         for (const rec of data.issue.contents) {
@@ -149,6 +161,7 @@
     let tocUrl = "";
     let description = "";
 
+    let covers = [];
     let contents = [];
 </script>
 
@@ -175,6 +188,15 @@
         <div>
             <label for="issue-title">タイトル :</label>
             <input type="text" id="issue-title" bind:value={issueTitle} > 
+        </div>
+        <div>
+            <label for="covers0">表紙 :</label>
+            <div>
+                {#each covers as cover, i}
+                <input type="text" id="covers{i}" list="titles" bind:value={cover} >
+                {/each} 
+                <button on:click={hadleClickAddCover}>追加</button>
+            </div>
         </div>
         <div>
             <label for="cover-url">表紙画像URL :</label>
@@ -270,8 +292,18 @@
         width: 400px;
         padding: 0.5em 0.5em;
     }
-    form > div > select {
+    form > div > div {
+        display: inline-block;
+    }
+    form > div > div > input[type="text"] {
+        width: 400px;
         padding: 0.5em 0.5em;
+        display: block;
+        margin-bottom: 5px;
+    }
+    form > div > div > input[type="text"]:last-of-type {
+        display: inline-block;
+        margin-bottom: 0;
     }
     form > div > table {
         margin-top: 1em;

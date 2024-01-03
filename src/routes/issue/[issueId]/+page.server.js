@@ -31,11 +31,17 @@ function GetIssue(db, issueId) {
     return new Promise((ok, ng) => {
         db.get("SELECT * FROM issues WHERE id = ?", [issueId], (err, rec) => {
             if (err == null && rec != null) {
-                db.all("SELECT c.*, t.title FROM contents as c JOIN titles as t ON t.id = c.title_id WHERE c.issue_id = ? ORDER BY c.order_no", [issueId], (err, rows) => {
-                    if (!err && rows != null) {
-                        rec.contents = rows;
-                        ok(rec);
+                db.all("SELECT t.title FROM covers as c JOIN titles as t ON t.id = c.title_id WHERE c.issue_id = ? ORDER BY c.title_id", [issueId], (err, coverTitles) => {
+                    if (err || coverTitles == null) {
+                        coverTitles = [""];
                     }
+                    db.all("SELECT c.*, t.title FROM contents as c JOIN titles as t ON t.id = c.title_id WHERE c.issue_id = ? ORDER BY c.order_no", [issueId], (err, contents) => {
+                        if (!err && contents != null) {
+                            rec.covers = coverTitles;
+                            rec.contents = contents;
+                            ok(rec);
+                        }
+                    });    
                 });
             } else {
                 ng("Issue Not Found");

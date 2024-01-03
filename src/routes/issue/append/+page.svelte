@@ -4,6 +4,11 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
+    function hadleClickAddCover(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();    
+        covers = [...covers, ""];
+    } 
 
     function newContent(no) {
         return {
@@ -101,6 +106,7 @@
                     coverUrl,
                     tocUrl,
                     description,
+                    covers,
                     contents
                 }),
                 headers: {
@@ -116,19 +122,21 @@
     onMount(async () => {
         const params = $page.url.searchParams;
         magazine = params.get("magazine-id") ?? "WSMG";
-        year = params.get("year") ?? "2023";
+        year = params.get("year") ?? "2024";
     })    
 
     export let data;
 
     let magazine = "WSMG";
-    let year = "2023";
+    let year = "2024";
     let issue = "";
     let magazineTitle = "";
     let coverUrl = "";
     let tocUrl = "";
     let description = "";
     $: issueId = `${magazine}${year}${issue}`;
+
+    let covers = [""];
 
     let contents = [
         { no: 1, titleId: null, title: "", pageNo: null, contentType: "1", isColor: false, serializationStatus: "", description: "", error: false },
@@ -171,6 +179,15 @@
         <div>
             <label for="magazine-title">タイトル :</label>
             <input type="text" id="magazine-title" bind:value={magazineTitle} > 
+        </div>
+        <div>
+            <label for="covers0">表紙 :</label>
+            <div>
+                {#each covers as cover, i}
+                <input type="text" id="covers{i}" list="title-list" bind:value={cover} >
+                {/each} 
+                <button on:click={hadleClickAddCover}>追加</button>
+            </div>
         </div>
         <div>
             <label for="cover-url">表紙画像URL :</label>
@@ -264,6 +281,19 @@
     }
     form > div > select {
         padding: 0.5em 0.5em;
+    }
+    form > div > div {
+        display: inline-block;
+    }
+    form > div > div > input[type="text"] {
+        width: 400px;
+        padding: 0.5em 0.5em;
+        display: block;
+        margin-bottom: 5px;
+    }
+    form > div > div > input[type="text"]:last-of-type {
+        display: inline-block;
+        margin-bottom: 0;
     }
     form > div > table {
         margin-top: 1em;
