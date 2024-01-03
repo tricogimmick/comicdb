@@ -70,6 +70,9 @@
             </tbody>
         </table>
     </div>
+    <div>
+        <a href="/">戻る</a>
+    </div>
 </div>
 
 <style>

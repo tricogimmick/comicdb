@@ -113,6 +113,7 @@
                 <input type="submit" name="submit" value="登録">
             </div>    
         </form>
+        <div><a href="/title">戻る</a></div>
     </div>
 </div>
 
