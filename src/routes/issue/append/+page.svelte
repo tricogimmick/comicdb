@@ -184,7 +184,7 @@
             <label for="covers0">表紙 :</label>
             <div>
                 {#each covers as cover, i}
-                <input type="text" id="covers{i}" list="title-list" bind:value={cover} >
+                <input type="text" id="covers{i}" list="titles" bind:value={cover} >
                 {/each} 
                 <button on:click={hadleClickAddCover}>追加</button>
             </div>
